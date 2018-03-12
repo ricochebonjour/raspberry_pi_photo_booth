@@ -61,7 +61,7 @@ def printCups(photo_number, filename_prefix):
     image = Image.open(filename)
     conn = cups.Connection()
     printers = conn.getPrinters()
-    printer_name = printers.keys()[0]
+    printer_name = list(printers.keys())[0]
     cups.setUser('pi')
     #Photo printed one time
     conn.printFile(printer_name, photo_number, filename_prefix,{"copies": "1"})
