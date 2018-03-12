@@ -57,15 +57,14 @@ camera.hflip = True # When preparing for photos, the preview will be flipped hor
 ### Thermal Printer with CUPS ###
 #################################
 def printCups(photo_number, filename_prefix):
-    filename = filename_prefix + '/' + str(photo_number) + 'of'+ str(total_pics)+'.jpg'
+    filename = filename_prefix + '_' + str(photo_number) + 'of'+ str(total_pics)+'.jpg'
     image = Image.open(filename)
-    image.thumbnail( (384,382), Image.ANTIALIAS)
     conn = cups.Connection()
     printers = conn.getPrinters()
     printer_name = printers.keys()[0]
     cups.setUser('pi')
     #Photo printed one time
-    conn.printFile("Printing", photo_number, "from", filename_prefix,{"copies": "1"})
+    conn.printFile(printer_name, photo_number, filename_prefix,{"copies": "1"})
 
 ####################
 ### Other Config ###
