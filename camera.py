@@ -8,6 +8,7 @@ from PIL import Image
 
 import RPi.GPIO as GPIO
 import picamera
+import cups
 
 #############
 ### Debug ###
@@ -51,6 +52,20 @@ camera.rotation = 270
 camera.annotate_text_size = 80
 camera.resolution = (photo_w, photo_h)
 camera.hflip = True # When preparing for photos, the preview will be flipped horizontally.
+
+#################################
+### Thermal Printer with CUPS ###
+#################################
+def printCups(photo_number, filename_prefix):
+    filename = filename_prefix + '/' + str(photo_number) + 'of'+ str(total_pics)+'.jpg'
+    image = Image.open(filename)
+    image.thumbnail( (384,382), Image.ANTIALIAS)
+    conn = cups.Connection()
+    printers = conn.getPrinters()
+    printer_name = printers.keys()[0]
+    cups.setUser('pi')
+    #Photo printed one time
+    conn.printFile("Printing", photo_number, "from", filename_prefix,{"copies": "1"})
 
 ####################
 ### Other Config ###
@@ -272,9 +287,11 @@ def main():
             prep_for_photo_screen(photo_number)
             taking_photo(photo_number, filename_prefix)
 
+        #printing process
+        printCups(photo_number, filename_prefix)
         #thanks for playing
         playback_screen(filename_prefix)
-
+        
         # If we were doing a test run, exit here.
         if TESTMODE_AUTOPRESS_BUTTON:
             break
