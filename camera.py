@@ -58,12 +58,12 @@ camera.hflip = True # When preparing for photos, the preview will be flipped hor
 #################################
 def printCups(photo_number, filename_prefix):
     filename = filename_prefix + '_' + str(photo_number) + 'of'+ str(total_pics)+'.jpg'
-    image = Image.open(filename)
     conn = cups.Connection()
     printers = conn.getPrinters()
-    printer_name = list(printers.keys())[0]
+    printer_name = list(printers)[0]
     cups.setUser('pi')
     #Photo printed one time
+    conn.enablePrinter(printer_name)
     conn.printFile(printer_name, photo_number, filename_prefix,{"copies": "1"})
 
 ####################
@@ -179,7 +179,8 @@ def taking_photo(photo_number, filename_prefix):
     camera.annotate_text = ''
     camera.capture(filename)
     print("Photo (" + str(photo_number) + ") saved: " + filename)
-
+    #printing process
+    printCups(photo_number, filename_prefix)
 
 def playback_screen(filename_prefix):
     """
@@ -286,8 +287,6 @@ def main():
             prep_for_photo_screen(photo_number)
             taking_photo(photo_number, filename_prefix)
 
-        #printing process
-        printCups(photo_number, filename_prefix)
         #thanks for playing
         playback_screen(filename_prefix)
         
