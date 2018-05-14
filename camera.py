@@ -64,7 +64,7 @@ def printCups(photo_number, filename_prefix):
     cups.setUser('pi')
     #Photo printed one time
     conn.enablePrinter(printer_name)
-    conn.printFile(printer_name, photo_number, filename_prefix,{"copies": "1"})
+    conn.printFile(printer_name, filename, filename,{"copies": "1"})
 
 ####################
 ### Other Config ###
