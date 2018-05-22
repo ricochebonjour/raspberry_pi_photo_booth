@@ -49,7 +49,7 @@ debounce = 0.05 #Min duration (seconds) button is required to be "pressed in" fo
 #Setup Camera
 camera = picamera.PiCamera()
 camera.rotation = 270
-camera.annotate_text_size = 80
+camera.annotate_text_size = 160
 camera.resolution = (photo_w, photo_h)
 camera.hflip = True # When preparing for photos, the preview will be flipped horizontally.
 
@@ -172,7 +172,7 @@ def taking_photo(photo_number, filename_prefix):
 
     #countdown from 3, and display countdown on screen
     for counter in range(3,0,-1):
-        print_overlay("             ..." + str(counter))
+        print_overlay(str(counter))
         sleep(1)
 
     #Take still
